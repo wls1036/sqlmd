@@ -1,0 +1,25 @@
+#foreach($item in $items)
+
+create table $item.name
+(
+#foreach($column in $item.columns)
+    #set($spliter = "#if($foreach.count != $item.columns.size()),#end")
+    #set($defaultValue = "#if($column.defaultValue) default $column.defaultValue#end")
+    #set($comment = "#if($column.comment) comment '$column.comment'#end")
+    $column.name $column.type.toUpperCase()$defaultValue$comment$spliter
+#end
+);
+#if($item.comment)
+
+-- Add comments to the table
+ALTER TABLE $item.name COMMENT '$item.comment';
+#end
+
+-- Create primary
+alter table $item.name add primary key ($util.join($item.keys));
+
+-- Create indexes
+#foreach($index in $item.indexs)
+create index $index.name on ${item.name}($util.join($index.columns));
+#end
+#end

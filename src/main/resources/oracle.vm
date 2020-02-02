@@ -1,0 +1,32 @@
+-- Create table
+#foreach($item in $items)
+create table $item.name.toUpperCase()
+(
+#foreach($column in $item.columns)
+    #set($s = "#if($foreach.count != $item.columns.size()),#end")
+    #set($s1 = "#if($column.defaultValue) default $column.defaultValue#end")
+    $column.name.toUpperCase() $column.type.toUpperCase()$s1$s
+#end
+);
+    #if($item.comment)
+
+-- Add comments to the table
+comment on table $item.name.toUpperCase()
+is '$item.comment';
+    #end
+
+-- Add comments to the columns
+#foreach($column in $item.columns)
+comment on column $item.name.toUpperCase().$column.name.toUpperCase()
+is '$column.comment';
+#end
+
+-- Create primary, unique and foreign key constraints
+alter table $item.name.toUpperCase()
+add constraint $item.name.toUpperCase()_PK primary key ($util.joinUpper($item.keys));
+
+-- Create/Recreate indexes
+#foreach($index in $item.indexs)
+create unique $index.name on ($util.joinUpper($index.columns));
+#end
+#end
