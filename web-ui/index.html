@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>sqlmd</title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<link href="css/prism.css" rel="stylesheet" />
+		<link href="css/style.css" rel="stylesheet" />
+		<link rel="stylesheet" href="//cdn.jsdelivr.net/editor/0.1.0/editor.css">
+		<script src="//cdn.jsdelivr.net/editor/0.1.0/editor.js"></script>
+		<script src="//cdn.jsdelivr.net/editor/0.1.0/marked.js"></script>
+		<script src="js/jquery.min.js"></script>
+	</head>
+	<body>
+		<script src="js/prism.js"></script>
+		<div class="page">
+			<div class="markdown">
+				<textarea id="editor" placeholder="Content here ...."></textarea>
+			</div>
+			<div class="code">
+				<div>
+					<select class="select">
+					  <option value ="oracle">Oracle</option>
+					  <option selected value ="mysql">MySQL</option>
+					</select>
+					<div id="sql" class="primary">转换为sql</div>
+				</div>
+				<pre><code class="language-sql" id="sqlcode">
+create table user
+(
+    id NUMBER comment '主键',
+    name VARCHAR2(100) comment '姓名',
+    email VARCHAR2(100) comment '邮箱',
+    gender VARCHAR2(2) default '男' comment '性别'
+);
+
+-- Add comments to the table
+ALTER TABLE user COMMENT '用户表';
+
+-- Create primary
+alter table user add primary key (id);
+
+-- Create indexes
+create index idx_name on user(name);
+create index idx_name_email on user(name,email);
+</code></pre>
+			</div>
+		</div>
+		<script>
+			$(document).ready(function() {
+				var editor = new Editor();
+				editor.render();
+				$.get("resource/example.md", function(data, status) {
+					editor.codemirror.setValue(data);
+				});
+				$("#sql").click(function() {
+					var data = editor.codemirror.getValue();
+					var vendor=$("select")[0].value;
+					$.post("https://zhengjianfeng.cn/xinyouservice/sqlmd?vendor="+vendor, {
+						md: data
+					}, function(
+						data, status) {
+						$("#sqlcode").text(data.sql);
+						Prism.highlightElement($('#sqlcode')[0]);
+					});
+				});
+			});
+		</script>
+	</body>
+</html>

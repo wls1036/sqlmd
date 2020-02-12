@@ -1,0 +1,59 @@
+.page{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: flex-start;
+	margin-top: 50px;
+}
+
+.icon-bold{
+	display: none;
+}
+
+.code{
+	width: 48%;
+}
+.language-sql{
+	height: 500px;
+	max-height: 500px;
+	overflow-y: scroll;
+}
+.markdown{
+	height: 568px;
+	width: 48%;
+	box-shadow: 1px 1px 10px 5px #888888;
+}
+.select {
+    font-family: Roboto;
+    font-weight: 500;
+    font-size: 12px;
+    width: 100px;
+    height: 38px;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+    line-height: 38px;
+    margin-right: 20px;
+    transition: all .2s cubic-bezier(.05,.03,.35,1);
+}
+.primary {
+    font-family: Roboto;
+    font-weight: 500;
+    font-size: 14px;
+	letter-spacing: 2px;
+    color: #FFF;
+    background-color: #217CE8;
+    border-radius: 5px;
+    width: 143px;
+    height: 38px;
+    display: inline-block;
+    vertical-align: top;
+    text-align: center;
+    line-height: 38px;
+    margin-right: 20px;
+    transition: all .2s cubic-bezier(.05,.03,.35,1);
+}
+.primary:hover {
+    cursor: pointer;
+    opacity: .7;
+}
